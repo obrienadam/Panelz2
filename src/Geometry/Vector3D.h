@@ -4,23 +4,23 @@
 class Vector3D
 {
 
- private:
+private:
 
- public:
+public:
 
-  Vector3D(double x = 0., double y = 0., double z = 0.);
+    Vector3D(double x = 0., double y = 0., double z = 0.);
 
-  double x, y, z;
+    double x, y, z;
 
-  double& operator()(int i);
+    double& operator()(int i);
 
-  double mag();
-  Vector3D unitVector();
+    double mag();
+    Vector3D unitVector();
 
-  Vector3D& operator+=(const Vector3D& rhs);
-  Vector3D& operator-=(const Vector3D& rhs);
-  Vector3D& operator*=(double rhs);
-  Vector3D& operator/=(double rhs);
+    Vector3D& operator+=(const Vector3D& rhs);
+    Vector3D& operator-=(const Vector3D& rhs);
+    Vector3D& operator*=(double rhs);
+    Vector3D& operator/=(double rhs);
 };
 
 Vector3D operator+(Vector3D lhs, const Vector3D& rhs);
