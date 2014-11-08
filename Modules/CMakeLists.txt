@@ -2,3 +2,4 @@
 # Author: Adam O'Brien
 
 add_executable(panelz2 panelz2.cxx)
+target_link_libraries(panelz2 Input Matrix)
