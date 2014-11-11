@@ -10,7 +10,9 @@ project(Panelz2)
 set(INCLUDE_DIR src/Input
                 src/Geometry
                 src/LinearAlgebra
-		/usr/include/petsc)
+                src/Airfoil
+                /usr/include/petsc
+                /usr/local/include/petsc)
 
 include_directories(${INCLUDE_DIR})
 

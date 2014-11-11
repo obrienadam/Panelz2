@@ -15,7 +15,8 @@ Input::Input()
             ("help", "Displays this help message")
             ("version", "Displays the current version")
             ("user-file", value<string>(),  "Specify the user input file")
-            ("airfoil-file", value<string>(), "Specify the file containing the airfoil data");
+            ("airfoil-file", value<string>(), "Specify the file containing the airfoil data")
+            ("symmetric", value<string>(), "");
 
 }
 

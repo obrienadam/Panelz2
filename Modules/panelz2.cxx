@@ -1,12 +1,12 @@
 #include <iostream>
 
-#include "Input.h"
+#include "Airfoil.h"
 #include "Matrix.h"
 
 int main(int argc, const char* argv[])
 {
 
-    Input(argc, argv);
+    Airfoil airfoil(argc, argv)
 
     return 0;
 
