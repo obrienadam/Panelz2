@@ -1,9 +1,9 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-#include <petsc/petsc.h>
+//#include <petsc/petsc.h>
 
-typedef Mat Matrix;
+//typedef Mat Matrix;
 
 void initializeAll();
 void finalizeAll();

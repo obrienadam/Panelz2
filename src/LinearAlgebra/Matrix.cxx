@@ -5,14 +5,14 @@
 void initializeAll()
 {
 
-    PetscInitialize(NULL, NULL, NULL, NULL);
+   // PetscInitialize(NULL, NULL, NULL, NULL);
 
 }
 
 void finalizeAll()
 {
 
-    PetscFinalize();
+   // PetscFinalize();
 
 }
 

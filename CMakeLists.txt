@@ -18,8 +18,8 @@ include_directories(${INCLUDE_DIR})
 
 # Compiler flags
 
-set(CMAKE_CC_FLAGS "-g -Wall -O3")
-set(CMAKE_CXX_FLAGS "-g -Wall -O3 -Wno-reorder -std=c++11")
+set(CMAKE_CC_FLAGS "-g -Wall -O3 -Wsign-compare")
+set(CMAKE_CXX_FLAGS "-g -Wall -O3 -Wno-reorder -std=c++11 -Wsign-compare")
 
 # Output paths
 

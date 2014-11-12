@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "Point3D.h"
-#include "Input.h"
 
 class Airfoil
 {
@@ -18,11 +17,11 @@ private:
 public:
 
     Airfoil();
-    Airfoil(int argc, const char* argv[]);
+    Airfoil(std::string name, const std::vector<Point3D>& nodes);
+
+    void init(const std::vector<Point3D>& nodes);
 
     std::string name;
-
-    Input input;
 
 };
 

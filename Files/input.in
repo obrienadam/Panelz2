@@ -1,0 +1,15 @@
+## User input file
+
+SourcePanels = ON
+
+VortexPanels = ON
+
+FreestreamDensity = 1.205
+
+FreestreamVelocityUnits = m/s
+
+FreestreamVelocity = 100
+
+AngleOfAttackUnits = degrees
+
+AngleOfAttack = 10
