@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="900" height="700"
+     viewBox="0 0 900 700">
+<defs>
+  <style>
+    text { font-family: monospace; font-size: 12px; fill: #ddd; }
+    .title { font-size: 16px; fill: #fff; font-weight: bold; }
+    .label { font-size: 11px; fill: #aaa; }
+    .axis  { stroke: #555; stroke-width: 1; fill: none; }
+    .grid  { stroke: #333; stroke-width: 0.5; fill: none; stroke-dasharray: 4,4; }
+  </style>
+</defs>
+<rect width="900" height="700" fill="#1a1a2e"/>
+<text class="title" x="450" y="30" text-anchor="middle">NACA0010-64   α = 10.0°   Cl = 1.1385</text>
+<polyline points="680.00,199.40 650.00,194.86 620.00,190.66 560.00,183.40 500.00,177.60 440.00,173.40 380.00,170.86 320.00,170.00 260.00,170.86 200.00,173.53 170.00,175.66 140.00,178.80 125.00,180.93 110.00,183.67 95.00,187.74 87.50,190.93 80.00,200.00 87.50,209.07 95.00,212.26 110.00,216.33 125.00,219.07 140.00,221.20 170.00,224.34 200.00,226.47 260.00,229.14 320.00,230.00 380.00,229.14 440.00,226.60 500.00,222.40 560.00,216.60 620.00,209.34 650.00,205.14 680.00,200.60 680.00,199.40" fill="#16213e" stroke="#4a90d9" stroke-width="2"/>
+<line x1="665.00" y1="197.13" x2="663.29" y2="208.43" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<line x1="635.00" y1="192.76" x2="634.70" y2="194.93" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<line x1="590.00" y1="187.03" x2="590.85" y2="180.03" stroke="#4a90d9" stroke-width="1.5" opacity="0.7"/>
+<line x1="530.00" y1="180.50" x2="531.63" y2="163.63" stroke="#4a90d9" stroke-width="1.5" opacity="0.7"/>
+<line x1="470.00" y1="175.50" x2="471.78" y2="150.01" stroke="#4a90d9" stroke-width="1.5" opacity="0.7"/>
+<line x1="410.00" y1="172.13" x2="411.42" y2="138.59" stroke="#4a90d9" stroke-width="1.5" opacity="0.7"/>
+<line x1="350.00" y1="170.43" x2="350.60" y2="128.81" stroke="#4a90d9" stroke-width="1.5" opacity="0.7"/>
+<line x1="290.00" y1="170.43" x2="289.27" y2="119.65" stroke="#4a90d9" stroke-width="1.5" opacity="0.7"/>
+<line x1="230.00" y1="172.20" x2="227.19" y2="108.97" stroke="#4a90d9" stroke-width="1.5" opacity="0.7"/>
+<line x1="185.00" y1="174.60" x2="179.59" y2="98.34" stroke="#4a90d9" stroke-width="1.5" opacity="0.7"/>
+<line x1="155.00" y1="177.23" x2="145.15" y2="83.04" stroke="#4a90d9" stroke-width="1.5" opacity="0.7"/>
+<line x1="132.50" y1="179.87" x2="116.06" y2="64.07" stroke="#4a90d9" stroke-width="1.5" opacity="0.7"/>
+<line x1="117.50" y1="182.30" x2="92.02" y2="42.62" stroke="#4a90d9" stroke-width="1.5" opacity="0.7"/>
+<line x1="102.50" y1="185.70" x2="51.73" y2="-1.51" stroke="#4a90d9" stroke-width="1.5" opacity="0.7"/>
+<line x1="91.25" y1="189.34" x2="-25.81" y2="-85.19" stroke="#4a90d9" stroke-width="1.5" opacity="0.7"/>
+<line x1="83.75" y1="195.47" x2="-246.96" y2="-78.12" stroke="#4a90d9" stroke-width="1.5" opacity="0.7"/>
+<line x1="83.75" y1="204.53" x2="39.68" y2="240.99" stroke="#4a90d9" stroke-width="1.5" opacity="0.7"/>
+<line x1="91.25" y1="210.66" x2="114.03" y2="157.24" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<line x1="102.50" y1="214.30" x2="117.73" y2="158.15" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<line x1="117.50" y1="217.70" x2="126.50" y2="168.36" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<line x1="132.50" y1="220.13" x2="138.72" y2="176.36" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<line x1="155.00" y1="222.77" x2="158.93" y2="185.17" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<line x1="185.00" y1="225.40" x2="187.17" y2="194.84" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<line x1="230.00" y1="227.80" x2="231.13" y2="202.38" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<line x1="290.00" y1="229.57" x2="290.26" y2="211.17" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<line x1="350.00" y1="229.57" x2="349.81" y2="216.30" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<line x1="410.00" y1="227.87" x2="409.60" y2="218.31" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<line x1="470.00" y1="224.50" x2="469.51" y2="217.47" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<line x1="530.00" y1="219.50" x2="529.45" y2="213.82" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<line x1="590.00" y1="212.97" x2="589.32" y2="207.32" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<line x1="635.00" y1="207.24" x2="634.03" y2="200.32" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<line x1="665.00" y1="202.87" x2="663.29" y2="191.57" stroke="#e07b39" stroke-width="1.5" opacity="0.7"/>
+<text class="label" x="80.00" y="280.00">← chord →     (arrows: blue = suction, orange = pressure)</text>
+<line x1="80.00" y1="200.00" x2="680.00" y2="200.00" class="axis"/>
+<line x1="80.00" y1="460.00" x2="680.00" y2="460.00" class="axis"/>
+<line x1="80.00" y1="580.00" x2="80.00" y2="220.00" class="axis"/>
+<line x1="80.00" y1="220.00" x2="680.00" y2="220.00" class="grid"/>
+<text class="label" x="74.00" y="224.00" text-anchor="end">-2</text>
+<line x1="80.00" y1="340.00" x2="680.00" y2="340.00" class="grid"/>
+<text class="label" x="74.00" y="344.00" text-anchor="end">-1</text>
+<line x1="80.00" y1="460.00" x2="680.00" y2="460.00" class="grid"/>
+<text class="label" x="74.00" y="464.00" text-anchor="end">0</text>
+<line x1="80.00" y1="580.00" x2="680.00" y2="580.00" class="grid"/>
+<text class="label" x="74.00" y="584.00" text-anchor="end">1</text>
+<text class="label" x="80.00" y="475.00" text-anchor="middle">0</text>
+<text class="label" x="230.00" y="475.00" text-anchor="middle">0.25</text>
+<text class="label" x="380.00" y="475.00" text-anchor="middle">0.5</text>
+<text class="label" x="530.00" y="475.00" text-anchor="middle">0.75</text>
+<text class="label" x="680.00" y="475.00" text-anchor="middle">1</text>
+<text class="label" x="380.00" y="212.00" text-anchor="middle">Cp distribution (blue = upper surface, red = lower)</text>
+<text class="label" x="685.00" y="464.00">x/c</text>
+<polyline points="83.75,-398.41 91.25,-136.88 102.50,72.04 117.50,176.04 132.50,226.08 155.00,270.58 185.00,307.10 230.00,333.41 290.00,358.43 350.00,376.75 410.00,392.85 470.00,408.89 530.00,426.09 590.00,445.89 635.00,464.38 665.00,482.86 " fill="none" stroke="#4a90d9" stroke-width="2"/>
+<polyline points="83.75,345.60 91.25,576.16 102.50,576.35 117.50,560.32 132.50,548.43 155.00,535.61 185.00,521.28 230.00,510.89 290.00,496.80 350.00,486.54 410.00,479.14 470.00,474.08 530.00,471.42 590.00,471.38 635.00,473.96 665.00,482.86 " fill="none" stroke="#e05a5a" stroke-width="2"/>
+<circle cx="83.75" cy="-398.41" r="3" fill="#4a90d9" opacity="0.8"/>
+<circle cx="91.25" cy="-136.88" r="3" fill="#4a90d9" opacity="0.8"/>
+<circle cx="102.50" cy="72.04" r="3" fill="#4a90d9" opacity="0.8"/>
+<circle cx="117.50" cy="176.04" r="3" fill="#4a90d9" opacity="0.8"/>
+<circle cx="132.50" cy="226.08" r="3" fill="#4a90d9" opacity="0.8"/>
+<circle cx="155.00" cy="270.58" r="3" fill="#4a90d9" opacity="0.8"/>
+<circle cx="185.00" cy="307.10" r="3" fill="#4a90d9" opacity="0.8"/>
+<circle cx="230.00" cy="333.41" r="3" fill="#4a90d9" opacity="0.8"/>
+<circle cx="290.00" cy="358.43" r="3" fill="#4a90d9" opacity="0.8"/>
+<circle cx="350.00" cy="376.75" r="3" fill="#4a90d9" opacity="0.8"/>
+<circle cx="410.00" cy="392.85" r="3" fill="#4a90d9" opacity="0.8"/>
+<circle cx="470.00" cy="408.89" r="3" fill="#4a90d9" opacity="0.8"/>
+<circle cx="530.00" cy="426.09" r="3" fill="#4a90d9" opacity="0.8"/>
+<circle cx="590.00" cy="445.89" r="3" fill="#4a90d9" opacity="0.8"/>
+<circle cx="635.00" cy="464.38" r="3" fill="#4a90d9" opacity="0.8"/>
+<circle cx="665.00" cy="482.86" r="3" fill="#4a90d9" opacity="0.8"/>
+<circle cx="83.75" cy="345.60" r="3" fill="#e05a5a" opacity="0.8"/>
+<circle cx="91.25" cy="576.16" r="3" fill="#e05a5a" opacity="0.8"/>
+<circle cx="102.50" cy="576.35" r="3" fill="#e05a5a" opacity="0.8"/>
+<circle cx="117.50" cy="560.32" r="3" fill="#e05a5a" opacity="0.8"/>
+<circle cx="132.50" cy="548.43" r="3" fill="#e05a5a" opacity="0.8"/>
+<circle cx="155.00" cy="535.61" r="3" fill="#e05a5a" opacity="0.8"/>
+<circle cx="185.00" cy="521.28" r="3" fill="#e05a5a" opacity="0.8"/>
+<circle cx="230.00" cy="510.89" r="3" fill="#e05a5a" opacity="0.8"/>
+<circle cx="290.00" cy="496.80" r="3" fill="#e05a5a" opacity="0.8"/>
+<circle cx="350.00" cy="486.54" r="3" fill="#e05a5a" opacity="0.8"/>
+<circle cx="410.00" cy="479.14" r="3" fill="#e05a5a" opacity="0.8"/>
+<circle cx="470.00" cy="474.08" r="3" fill="#e05a5a" opacity="0.8"/>
+<circle cx="530.00" cy="471.42" r="3" fill="#e05a5a" opacity="0.8"/>
+<circle cx="590.00" cy="471.38" r="3" fill="#e05a5a" opacity="0.8"/>
+<circle cx="635.00" cy="473.96" r="3" fill="#e05a5a" opacity="0.8"/>
+<circle cx="665.00" cy="482.86" r="3" fill="#e05a5a" opacity="0.8"/>
+<text class="label" x="890" y="692" text-anchor="end">Panelz2 — Hess &amp; Smith panel method</text>
+</svg>

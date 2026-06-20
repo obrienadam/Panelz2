@@ -12,6 +12,21 @@ Airfoil coordinate files follow the UIUC Airfoil Database format:
 
 ---
 
+## Visualisation Examples
+
+Here are the pressure coefficient ($C_p$) distributions and airfoil pressure envelopes solved at $\alpha = 10^\circ$ (blue represents suction/negative $C_p$, orange/red represents positive pressure):
+
+### NACA 0015 ($C_l = 1.1504$)
+![NACA 0015](images/naca0015.svg)
+
+### NACA 0010-64 ($C_l = 1.1385$)
+![NACA 0010-64](images/naca001064.svg)
+
+### MH 120 Cambered Glider Airfoil ($C_l = 1.5148$)
+![MH 120](images/mh120.svg)
+
+---
+
 ## Algorithm
 
 The solver uses the **constant-strength source + global vortex** formulation:
