@@ -1,45 +1,120 @@
-Panelz2
-=======
+# Panelz2
 
-Author: Adam O'Brien
+**Author:** Adam O'Brien  
+**E-mail:** obrienadam89@gmail.com  
+**Institution:** University of Toronto
 
-E-mail: a.obrien@mail.utoronto.ca
+A two-dimensional steady source/vortex panel method solver for inviscid flows around airfoils, implementing the classic **Hess & Smith** algorithm. The solver produces surface pressure coefficients (Cp), lift coefficient (Cl), and an SVG visualisation of the results.
 
-Institution: University of Toronto
+Airfoil coordinate files follow the UIUC Airfoil Database format:
 
-A two-dimensional unsteady source/vortex panel method solver for inviscid flows around airfoils. This code utilizes Petsc for parallel computations on dense matrices. The file format for the airfoils is very simple. The code is designed to read in airfoil data in the same format found at:
+> http://m-selig.ae.illinois.edu/ads/coord_database.html
 
-http://m-selig.ae.illinois.edu/ads/coord_database.html
+---
 
-The code should work with just about any airfoil data base, as it simply reads in the first line as the airfoil name, and all subsequent lines are assumed to be the x and y coordinates of the airfoil separated by whitespace.
+## Algorithm
 
-Build
+The solver uses the **constant-strength source + global vortex** formulation:
 
-In order to build and run Panelz2, the following libraries should be available on the system:
+1. Discretise the airfoil surface into N flat panels.  
+2. Build an (N+1)×(N+1) influence-coefficient matrix (Katz & Plotkin §3.14).  
+3. Apply no-penetration boundary conditions at each panel control point.  
+4. Enforce the **Kutta condition** at the trailing edge.  
+5. Solve the linear system with **Eigen's LU factorisation**.  
+6. Recover surface tangential velocity, Cp = 1 − (Vt/V∞)², and Cl.  
+7. Export results to CSV and a self-contained SVG.
 
-1) Any MPI library
+---
 
-2) Petsc - http://www.mcs.anl.gov/petsc/
+## Dependencies
 
-3) Boost - http://www.boost.org/
+| Library | Purpose | How provided |
+|---------|---------|-------------|
+| [Eigen 3.4](https://eigen.tuxfamily.org) | Dense linear algebra | CMake `FetchContent` (header-only) |
+| [Abseil (absl)](https://abseil.io) | CLI flag parsing | CMake `FetchContent` |
+| [GoogleTest 1.14](https://github.com/google/googletest) | Unit & physics tests | CMake `FetchContent` |
+| CMake ≥ 3.14 | Build system | System install |
+| C++17 compiler | (GCC, Clang, MSVC) | System install |
 
-4) CMake - http://www.cmake.org/
+> **Note:** PETSc, MPI, and Boost are no longer required.
 
-In order to build the project, run
+---
 
-$ cmake CMakeLists.txt
+## Build
 
-in the "Panelz2" directory. This will produce the makefiles needed for the build. Then, simply run
+```bash
+# Configure (FetchContent downloads Eigen, absl, GTest automatically)
+cmake -B build -DCMAKE_BUILD_TYPE=Release
 
-$ make
+# Build
+cmake --build build --parallel
 
-Which will produce the binary "panelz2" in the "bin" directory. See below for information on how to run simulations.
+# Run tests
+cd build && ctest --output-on-failure
+```
 
-Run:
+The binary is placed in `build/bin/panelz2` (Linux/macOS) or `build/bin/Release/panelz2.exe` (Windows).
 
-In linux systems, usage is simlpy:
+---
 
-$ panelz2 --user-file [user input filename] --airfoil-file [airfoil data filename]
+## Usage
 
-For an example of the user input file, see the "Panelz2/Files" directory. This project will have functionality continually added to it, but will remain relatively lightweight and simple, as it is mostly just a way for me to experiment with parallel matrix computations. Contributors are always welcome, however! See the included license file for information regarding distribution.
+```bash
+panelz2 --user_file Files/input.in --airfoil_file Files/naca0015.dat
+```
 
+Optional flags:
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--user_file` | *(required)* | Path to the flow-conditions input file |
+| `--airfoil_file` | *(required)* | Path to the UIUC-format airfoil coordinate file |
+| `--output` | `results` | Base name for output files (`.csv` and `.svg`) |
+
+The solver prints Cl to stdout and writes:
+- `<output>.csv` — columns: `x/c, Cp, Vt/Vinf`
+- `<output>.svg` — airfoil outline with Cp arrows + Cp vs x/c chart
+
+### Example input file (`Files/input.in`)
+
+```
+SourcePanels          = ON
+VortexPanels          = ON
+FreestreamDensity     = 1.205       # kg/m³
+FreestreamVelocityUnits = m/s
+FreestreamVelocity    = 100
+AngleOfAttackUnits    = degrees
+AngleOfAttack         = 10
+```
+
+---
+
+## Included airfoils
+
+| File | Description |
+|------|-------------|
+| `Files/naca0015.dat` | NACA 0015 symmetric airfoil |
+| `Files/naca001064.dat` | NACA 001064 |
+| `Files/mh120.dat` | MH 120 glider airfoil |
+
+---
+
+## Tests
+
+Tests are written with **GoogleTest** and cover:
+
+- **Vector3D** — arithmetic, magnitude, unit vector, dot/cross product
+- **DenseMatrix** — Eigen alias solve correctness (2×2, 3×3, 5×5, identity)
+- **Airfoil** — panel length, angle, tangent/normal, chord
+- **PanelSolver** — physics validation:
+  - Flat plate Cl ≈ 0 at α = 0°
+  - Thin airfoil theory: Cl ≈ 2π sin(α) at α = 5° and 10°
+  - Symmetric airfoil Cp symmetry at α = 0°
+  - Stagnation Cp ≈ 1
+  - Suction peak on upper surface at positive AoA
+
+---
+
+## License
+
+See the included `LICENSE` file.

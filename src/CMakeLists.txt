@@ -4,3 +4,4 @@
 add_subdirectory(Geometry)
 add_subdirectory(LinearAlgebra)
 add_subdirectory(Airfoil)
+add_subdirectory(Solver)

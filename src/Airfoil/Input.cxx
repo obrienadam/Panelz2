@@ -1,213 +1,111 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
-
-#include <boost/algorithm/string.hpp>
+#include <sstream>
+#include <algorithm>
+#include <stdexcept>
 
 #include "Input.h"
-#include "VersionInfo.h"
 
 Input::Input()
-    :
-      commandLineOptions_("Available Options:")
 {
-    using namespace std;
-    using namespace boost::program_options;
-
-    //- Construct the available command line options
-
-    commandLineOptions_.add_options()
-            ("help", "| Displays this help message")
-            ("version", "| Displays the current version")
-            ("user-file", value<string>(),  "| Specify the user input file")
-            ("airfoil-file", value<string>(), "| Specify the file containing the airfoil data")
-            ("symmetric", value<string>(), "| Takes an arg <yes/no> to specify if the airfoil is symmetric or not");
-
-    //- Construct the input map
-
-    inputMap_["SourcePanels"] = "ON";
-    inputMap_["VortexPanels"] = "OFF";
-    inputMap_["FreestreamDensity"] = "1.205";
+    // Default values — overridden by the user input file
+    inputMap_["SourcePanels"]            = "ON";
+    inputMap_["VortexPanels"]            = "ON";
+    inputMap_["FreestreamDensity"]       = "1.225";
     inputMap_["FreestreamVelocityUnits"] = "m/s";
-    inputMap_["FreestreamVelocity"] = "0";
-    inputMap_["AngleOfAttackUnits"] = "degrees";
-    inputMap_["AngleOfAttack"] = "0";
-
+    inputMap_["FreestreamVelocity"]      = "0";
+    inputMap_["AngleOfAttackUnits"]      = "degrees";
+    inputMap_["AngleOfAttack"]           = "0";
 }
 
-Input::Input(int argc, const char *argv[], Freestream &freestream, Airfoil& airfoil)
-    :
-      Input()
+// ─────────────────────────────────────────────────────────────────────────────
+
+void Input::processBuffer(std::string& buffer)
 {
+    // Remove all spaces and tabs
+    buffer.erase(std::remove_if(buffer.begin(), buffer.end(),
+                                [](unsigned char c){ return c == ' ' || c == '\t' || c == '\r'; }),
+                 buffer.end());
 
-    readCommandLineArgs(argc, argv, freestream, airfoil);
-
+    // Strip inline comments
+    auto commentPos = buffer.find('#');
+    if (commentPos != std::string::npos)
+        buffer = buffer.substr(0, commentPos);
 }
 
-void Input::processBuffer(std::string &buffer)
-{
-    using namespace boost::algorithm;
+// ─────────────────────────────────────────────────────────────────────────────
 
-    erase_all(buffer, " ");
-
-    buffer = buffer.substr(0, buffer.find("#"));
-
-}
-
-void Input::readCommandLineArgs(int argc, const char *argv[], Freestream &freestream, Airfoil &airfoil)
-{
-    using namespace std;
-    using namespace boost::program_options;
-
-    store(parse_command_line(argc, argv, commandLineOptions_), commandLineVarMap_);
-    notify(commandLineVarMap_);
-
-    if(commandLineVarMap_.count("help"))
-    {
-
-        cout << commandLineOptions_ << endl;
-        exit(0);
-
-    }
-    else if (commandLineVarMap_.count("version"))
-    {
-
-        versionInfo();
-        exit(0);
-
-    }
-
-    if (commandLineVarMap_.count("user-file"))
-    {
-
-        readUserInputFile(commandLineVarMap_["user-file"].as<string>(), freestream);
-
-    }
-    else
-    {
-
-        cout << commandLineOptions_ << endl;
-        throw "No user input file specified.";
-
-    }
-
-    if (commandLineVarMap_.count("airfoil-file"))
-    {
-
-        readAirfoilCoordinatesFile(commandLineVarMap_["airfoil-file"].as<string>(), airfoil);
-
-    }
-    else
-    {
-
-        cout << commandLineOptions_ << endl;
-        throw "No user airfoil file specified.";
-
-    }
-}
-
-void Input::readUserInputFile(std::string filename, Freestream &freestream)
+void Input::readUserInputFile(const std::string& filename, Freestream& freestream)
 {
     using namespace std;
 
-    string buffer, parameterName, parameterValue;
-    ifstream inputFile;
+    ifstream file(filename);
+    if (!file.is_open())
+        throw runtime_error("User input file \"" + filename + "\" was not found.");
 
-    inputFile.open(filename.c_str());
+    string buffer, paramName, paramValue;
 
-    if(!inputFile.is_open())
-        throw ("User input file \"" + filename + "\" was not found.").c_str();
-
-    while(!inputFile.eof())
+    while (getline(file, buffer))
     {
-
-        getline(inputFile, buffer);
-
         processBuffer(buffer);
-
-        if(buffer.empty())
+        if (buffer.empty())
             continue;
 
-        parameterName = buffer.substr(0, buffer.find("="));
-        parameterValue = buffer.substr(buffer.find("=") + 1, buffer.back());
+        auto eqPos = buffer.find('=');
+        if (eqPos == string::npos)
+            throw runtime_error("Malformed line (no '=') in \"" + filename + "\": " + buffer);
 
-        if(inputMap_.count(parameterName) != 0)
-        {
+        paramName  = buffer.substr(0, eqPos);
+        paramValue = buffer.substr(eqPos + 1);
 
-            inputMap_[parameterName] = parameterValue;
-
-        }
+        if (inputMap_.count(paramName))
+            inputMap_[paramName] = paramValue;
         else
-        {
-
-            throw ("Unrecognized input parameter name \"" + parameterName + "\".").c_str();
-
-        }
-
+            throw runtime_error("Unrecognised parameter \"" + paramName + "\" in \"" + filename + "\".");
     }
 
-    cout << "Finished reading file \"" + filename + "\".\n";
+    cout << "Finished reading user input file \"" << filename << "\".\n";
 
     freestream.acceptInput(inputMap_);
-
 }
 
-void Input::readAirfoilCoordinatesFile(std::string filename, Airfoil &airfoil)
+// ─────────────────────────────────────────────────────────────────────────────
+
+void Input::readAirfoilCoordinatesFile(const std::string& filename, Airfoil& airfoil)
 {
     using namespace std;
 
-    double x, y;
+    ifstream file(filename);
+    if (!file.is_open())
+        throw runtime_error("Airfoil file \"" + filename + "\" was not found.");
+
     string buffer;
-    ifstream inputFile;
     vector<Point3D> nodes;
 
-    inputFile.open(filename.c_str());
-
-    if(!inputFile.is_open())
-        throw ("User input file \"" + filename + "\" was not found.").c_str();
-
-    while(!inputFile.eof())
+    // First non-empty line is the airfoil name
+    while (getline(file, buffer))
     {
-
-        getline(inputFile, buffer);
-
         processBuffer(buffer);
-
-        if(buffer.empty())
-            continue;
-
-        airfoil.name = buffer;
-
-        cout << "Airfoil name: " + airfoil.name + "\n";
-
-        break;
-
+        if (!buffer.empty())
+        {
+            airfoil.name = buffer;
+            cout << "Airfoil: " << airfoil.name << "\n";
+            break;
+        }
     }
 
-    while(!inputFile.eof())
-    {
-
-        if(!(inputFile >> x))
-        {
-
-            throw "A proglem occured in Input::readAirfoilCoordinatesFile.";
-
-        }
-
-        if(!(inputFile >> y))
-        {
-
-            throw "A proglem occured in Input::readAirfoilCoordinatesFile.";
-
-        }
-
+    // Remaining lines: x y coordinate pairs
+    double x, y;
+    while (file >> x >> y)
         nodes.push_back(Point3D(x, y));
 
-    }
+    if (nodes.size() < 3)
+        throw runtime_error("Airfoil file \"" + filename + "\" has fewer than 3 coordinate points.");
 
-    cout << "Finished reading file \"" + filename + "\".\n"
-         << setfill('-') << setw(64) << "\n";
+    cout << "Read " << nodes.size() << " nodes ("
+         << (nodes.size() - 1) << " panels).\n"
+         << setfill('-') << setw(64) << "" << "\n";
 
     airfoil.init(nodes);
-
 }
