@@ -54,19 +54,20 @@ void SvgPlotter::cpToSvg(double xoc, double cp,
 void SvgPlotter::write(const std::string& filename) const
 {
     // ── Layout constants (pixels) ────────────────────────────────────────────
-    const int totalW  = 900;
-    const int totalH  = 700;
+    const int totalW  = 1000;
+    const int totalH  = 550;
 
-    // Airfoil panel (top half)
-    const double afOX    = 80.0;
-    const double afOY    = 200.0;   // y-center of airfoil view
-    const double afScale = 600.0;   // chord → pixels
+    // Airfoil panel (Left side)
+    const double afOX    = 150.0;
+    const double afOY    = 275.0;   // y-center of airfoil view
+    const double afScale = 280.0;   // chord → pixels
+    const double arrowScale = 25.0;  // 1 Cp unit → px of arrow length
 
-    // Cp chart (bottom half)
-    const double cpOX    = 80.0;
-    const double cpOY    = 460.0;   // y = 0 line in Cp chart
-    const double cpScaleX = 600.0;
-    const double cpScaleY = 120.0;  // Cp = 1 → 120 px downward
+    // Cp chart (Right side)
+    const double cpOX    = 520.0;
+    const double cpOY    = 410.0;   // y = 0 line in Cp chart
+    const double cpScaleX = 380.0;
+    const double cpScaleY = 90.0;  // Cp = 1 → 90 px downward
 
     const double chord = airfoil_.chord() > 1e-12 ? airfoil_.chord() : 1.0;
 
@@ -164,7 +165,6 @@ void SvgPlotter::write(const std::string& filename) const
     }
 
     // Draw Cp arrows on the airfoil surface
-    const double arrowScale = 60.0;  // 1 Cp unit → px of arrow length
     for (int i = 0; i < N; ++i)
     {
         const double xoc = airfoil_.panelCenter(i).x / chord;
@@ -188,9 +188,9 @@ void SvgPlotter::write(const std::string& filename) const
     }
 
     // Panel label
-    f << "<text class=\"label\" x=\"" << fmt(afOX)
-      << "\" y=\"" << fmt(afOY + 80.0) << "\""
-      << ">← chord →     (arrows: blue = suction, orange = pressure)</text>\n";
+    f << "<text class=\"label\" x=\"" << fmt(afOX + afScale / 2.0)
+      << "\" y=\"" << fmt(afOY + 120.0) << "\" text-anchor=\"middle\""
+      << ">← chord →   (arrows: blue = suction, orange = pressure)</text>\n";
 
     // Chord axis line
     {
@@ -209,14 +209,18 @@ void SvgPlotter::write(const std::string& filename) const
     f << "<line x1=\"" << fmt(cpOX) << "\" y1=\"" << fmt(cpOY)
       << "\" x2=\"" << fmt(cpOX + cpScaleX) << "\" y2=\"" << fmt(cpOY)
       << "\" class=\"axis\"/>\n";
-    // Vertical (Cp = -2..1)
-    double cpMin = -2.0, cpMax = 1.0;
+    // Vertical (Cp = -4..1)
+    double cpMin = -4.0, cpMax = 1.0;
     f << "<line x1=\"" << fmt(cpOX) << "\" y1=\"" << fmt(cpOY + cpMax * cpScaleY)
       << "\" x2=\"" << fmt(cpOX) << "\" y2=\"" << fmt(cpOY + cpMin * cpScaleY)
       << "\" class=\"axis\"/>\n";
+    // Vertical right border
+    f << "<line x1=\"" << fmt(cpOX + cpScaleX) << "\" y1=\"" << fmt(cpOY + cpMax * cpScaleY)
+      << "\" x2=\"" << fmt(cpOX + cpScaleX) << "\" y2=\"" << fmt(cpOY + cpMin * cpScaleY)
+      << "\" class=\"grid\"/>\n";
 
-    // Grid lines at Cp = -2,-1, 0, 1
-    for (double cpLine : {-2.0, -1.0, 0.0, 1.0})
+    // Grid lines at Cp = -4, -3, -2, -1, 0, 1
+    for (double cpLine : {-4.0, -3.0, -2.0, -1.0, 0.0, 1.0})
     {
         double gy = cpOY + cpLine * cpScaleY;
         f << "<line x1=\"" << fmt(cpOX) << "\" y1=\"" << fmt(gy)
@@ -226,21 +230,29 @@ void SvgPlotter::write(const std::string& filename) const
           << "\" y=\"" << fmt(gy + 4.0)
           << "\" text-anchor=\"end\">" << cpLine << "</text>\n";
     }
-    // x/c labels
+    // x/c labels and tick marks
     for (double xLabel : {0.0, 0.25, 0.5, 0.75, 1.0})
     {
         double gx = cpOX + xLabel * cpScaleX;
+        double gy = cpOY + cpMax * cpScaleY;
+        f << "<line x1=\"" << fmt(gx) << "\" y1=\"" << fmt(gy)
+          << "\" x2=\"" << fmt(gx) << "\" y2=\"" << fmt(gy + 4.0)
+          << "\" class=\"axis\"/>\n";
         f << "<text class=\"label\" x=\"" << fmt(gx)
-          << "\" y=\"" << fmt(cpOY + 15.0)
+          << "\" y=\"" << fmt(gy + 16.0)
           << "\" text-anchor=\"middle\">" << xLabel << "</text>\n";
     }
 
-    // Chart title
+    // Chart titles
     f << "<text class=\"label\" x=\"" << fmt(cpOX + cpScaleX / 2.0)
-      << "\" y=\"" << fmt(cpOY + cpMin * cpScaleY - 8.0)
-      << "\" text-anchor=\"middle\">Cp distribution (blue = upper surface, red = lower)</text>\n";
-    f << "<text class=\"label\" x=\"" << fmt(cpOX + cpScaleX + 5.0)
-      << "\" y=\"" << fmt(cpOY + 4.0) << "\">x/c</text>\n";
+      << "\" y=\"" << fmt(cpOY + cpMin * cpScaleY - 12.0)
+      << "\" text-anchor=\"middle\" style=\"font-weight: bold; fill: #fff;\">Cp Distribution</text>\n";
+    f << "<text class=\"label\" x=\"" << fmt(cpOX + cpScaleX / 2.0)
+      << "\" y=\"" << fmt(cpOY + cpMin * cpScaleY - 28.0)
+      << "\" text-anchor=\"middle\">(-Cp plotted positive upward)</text>\n";
+    f << "<text class=\"label\" x=\"" << fmt(cpOX + cpScaleX / 2.0)
+      << "\" y=\"" << fmt(cpOY + cpMax * cpScaleY + 32.0)
+      << "\" text-anchor=\"middle\">x/c</text>\n";
 
     // Draw upper surface curve
     if (!upper_pts.empty())
